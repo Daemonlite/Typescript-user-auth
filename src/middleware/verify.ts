@@ -1,22 +1,40 @@
+import * as jwt from 'jsonwebtoken';
+import * as express from 'express';
 
-import { Request, Response, NextFunction } from 'express';
-import jwt, { VerifyCallback } from 'jsonwebtoken';
+interface ExpressRequest extends express.Request {
+  user?: any;
+}
 
-const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
-  const authHeader = req.headers.token as string;
+// Middleware function to check if the request is authorized
+export const authenticateJWT = (
+  req: ExpressRequest,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const authHeader = req.headers.authorization;
+
   if (authHeader) {
-    const token = authHeader.split(' ')[1];
-    jwt.verify(token, process.env.SECRET || 'hesdfuytdrtjryjy', (err: any, user: any) => {
+    const token = authHeader.split(' ')[1]; // Bearer <token>
+    const secretKey = 'your_secret_key';
+
+    jwt.verify(token, secretKey, (err: any, user: any) => {
       if (err) {
-        res.status(403).json('Token is not valid!');
-      } else {
-        req.user  = user;
-        next();
+        return res.sendStatus(403); // Forbidden
       }
+
+      req.user = user;
+      next();
     });
   } else {
-    res.status(401).json('You are not authenticated!');
+    res.sendStatus(401); // Unauthorized
   }
 };
 
-export { verifyToken };
+// Generate a new JWT token
+export const generateToken = (user: any) => {
+  const secretKey = 'your_secret_key';
+
+  return jwt.sign(user, secretKey);
+};
+
+

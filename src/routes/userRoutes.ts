@@ -9,12 +9,13 @@ import {
 } from '../handlers/userHandler';
 
 const router = express.Router();
+import { authenticateJWT } from '../middleware/verify';
 
-router.get('/users', getUsers);
+router.get('/user',authenticateJWT, getUsers);
 router.get('/users/:id', getUserById);
 router.post('/register', register);
 router.post('/login', loginUser);
-router.put('/users/:id', updateUserInfo);
-router.delete('/users/:id', deleteUser);
+router.put('/users/:id',authenticateJWT, updateUserInfo);
+router.delete('/users/:id',authenticateJWT, deleteUser);
 
 export default router;

@@ -108,12 +108,7 @@ const register = async (req: Request, res: Response): Promise<void> => {
     password: hashedPassword,
     profile: profileImageUrl,
     isAdmin,
-    isVerified,
-    isBanned,
     location,
-    bio,
-    subscribers: [],
-    polls: [],
   });
   
 
@@ -136,8 +131,6 @@ const register = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: "Failed to create user" });
   }
 };
-
-
 
 
 const loginUser = async (req: Request, res: Response): Promise<void> => {

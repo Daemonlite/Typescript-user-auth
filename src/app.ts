@@ -18,6 +18,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+//routes
+app.use('/api/users',require('./routes/userRoutes'))
+
 app.listen(port, () => {
   console.log(`SERVER ACTIVE ON PORT ${port}`);
 });

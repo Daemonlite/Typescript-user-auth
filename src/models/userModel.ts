@@ -7,6 +7,7 @@ interface IUser extends Document {
   password?: string;
   profile?: string;
   location?: string;
+  isAdmin?:boolean;
 }
 
 const userSchema: Schema<IUser> = new mongoose.Schema(
@@ -35,6 +36,10 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
       type: String,
       required: false,
     },
+    isAdmin:{
+      type:Boolean,
+      default:false
+    }
   },
   {
     timestamps: true,
